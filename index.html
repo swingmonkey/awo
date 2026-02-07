@@ -27,6 +27,16 @@
             border-radius: 15px; /* 圆角设计 */
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1); /* 阴影效果 */
             overflow: hidden; /* 隐藏溢出内容 */
+            display: flex; /* 弹性布局 */
+            flex-direction: column; /* 垂直方向 */
+        }
+        
+        .main-content {
+            /* 移除弹性布局，使用默认布局 */
+        }
+        
+        .content {
+            padding: 40px; /* 内容区四周留白 */
         }
         
         header {
@@ -36,9 +46,13 @@
             text-align: center; /* 文字居中 */
         }
         
+        .header-content {
+            margin-bottom: 20px; /* 下边距 */
+        }
+        
         h1 {
             font-size: 2.5rem; /* 主标题大小 */
-            margin-bottom: 15px; /* 下边距 */
+            margin-bottom: 10px; /* 下边距 */
             font-weight: 600; /* 字体粗细 */
         }
         
@@ -46,11 +60,74 @@
             font-size: 1.2rem; /* 副标题大小 */
             opacity: 0.9; /* 透明度 */
             max-width: 800px; /* 最大宽度 */
-            margin: 0 auto; /* 水平居中 */
+            margin-left: auto; /* 水平居中 */
+            margin-right: auto; /* 水平居中 */
         }
         
-        .content {
-            padding: 40px; /* 内容区四周留白 */
+        .header-audio {
+            position: fixed; /* 固定定位 */
+            top: 20px; /* 距离顶部 */
+            right: 20px; /* 距离右侧 */
+            z-index: 1000; /* 层级最高 */
+            background: rgba(26, 58, 108, 0.95); /* 半透明背景 */
+            color: white; /* 文字颜色 */
+            padding: 20px; /* 内边距 */
+            border-radius: 10px; /* 圆角 */
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); /* 阴影效果 */
+            min-width: 300px; /* 增加最小宽度，使进度条更长 */
+        }
+        
+        .header-audio h3 {
+            margin-bottom: 15px; /* 下边距 */
+            font-size: 1.1rem; /* 字体大小 */
+            text-align: center; /* 文字居中 */
+        }
+        
+        .header-audio audio {
+            width: 100%; /* 音频播放器宽度 */
+        }
+        
+        .header-audio p {
+            text-align: center; /* 文字居中 */
+            margin-top: 5px; /* 上边距 */
+            font-size: 0.8rem; /* 字体大小 */
+            opacity: 0.9; /* 透明度 */
+        }
+        
+        /* 官方文档悬浮窗口样式 */
+        .document-float {
+            position: fixed; /* 固定定位 */
+            top: 200px; /* 距离顶部，进一步增加距离避免重叠 */
+            right: 20px; /* 距离右侧 */
+            z-index: 999; /* 层级 */
+            background: rgba(26, 58, 108, 0.95); /* 半透明背景 */
+            color: white; /* 文字颜色 */
+            padding: 20px; /* 内边距 */
+            border-radius: 10px; /* 圆角 */
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); /* 阴影效果 */
+            min-width: 300px; /* 最小宽度，与播客一致 */
+        }
+        
+        .document-float h3 {
+            margin-bottom: 15px; /* 下边距 */
+            font-size: 1.1rem; /* 字体大小 */
+            text-align: center; /* 文字居中 */
+        }
+        
+        .float-document-link {
+            display: block; /* 块级元素 */
+            background: rgba(255, 255, 255, 0.2); /* 背景色 */
+            color: white; /* 文字颜色 */
+            text-decoration: none; /* 无下划线 */
+            padding: 10px 15px; /* 内边距 */
+            border-radius: 5px; /* 圆角 */
+            text-align: center; /* 文字居中 */
+            transition: all 0.3s ease; /* 过渡动画 */
+        }
+        
+        .float-document-link:hover {
+            background: rgba(255, 255, 255, 0.3); /* 悬停背景色 */
+            transform: translateY(-2px); /* 悬停上移 */
         }
         
         .section {
@@ -250,15 +327,38 @@
     <div class="container">
         <!-- 页面头部，显示标题 -->
         <header>
-            <h1>《全天候运行规定》互动学习</h1>
-            <p class="subtitle">基于AC-91-FS/CA/TM-2026-16R2（2026年版）的深度解读</p>
+            <div class="header-content">
+                <h1>《全天候运行规定》</h1>
+                <p class="subtitle">基于AC-91-FS/CA/TM-2026-16R2（2026年版）的解读</p>
+            </div>
         </header>
         
+        <!-- 音频播放器 -->
+        <div class="header-audio">
+            <h3>播客</h3>
+            <audio controls>
+                <source src="bc001_min.mp3" type="audio/mpeg">
+                您的浏览器不支持音频播放。
+            </audio>
+        </div>
+        
+        <!-- 官方文档悬浮窗口 -->
+        <div class="document-float">
+            <h3>官方文档获取</h3>
+            <p style="margin-bottom: 15px; font-size: 0.9rem;">
+                由 CAAC 于2026年1月27日发布。
+            </p>
+            <a href="https://www.caac.gov.cn/XXGK/XXGK/GFXWJ/202602/P020260204582783346318.pdf" class="float-document-link" target="_blank" rel="noopener noreferrer">
+                📄 点击打开
+            </a>
+        </div>
+        
         <!-- 主要内容区域 -->
-        <div class="content">
+        <div class="main-content">
+            <div class="content">
             <!-- 第一部分：核心对话 -->
             <div class="section">
-                <h2 class="section-title">核心对话：全天候运行标准详解</h2>
+                <h2 class="section-title">全天候运行标准详解</h2>
                 
                 <div class="dialog-container">
                     <!-- AOC角色发言 -->
@@ -450,22 +550,6 @@
                         </tbody>
                     </table>
                 </div>
-            </div>
-            
-            <!-- 第三部分：文档链接 -->
-            <div class="section">
-                <h2 class="section-title">官方文档获取</h2>
-                <p>本文档内容基于《全天候运行规定》(AC-91-FS/CA/TM-2026-16R2)，由中国民用航空局于2026年1月27日发布。</p>
-                
-                <!-- 官方文档链接 - 替换为可测试的民航局官网通用链接 -->
-                <a href="https://www.caac.gov.cn/XXGK/XXGK/GFXWJ/202602/P020260204582783346318.pdf" class="document-link" target="_blank" rel="noopener noreferrer">
-                    📄 访问《全天候运行规定》(2026年版) 官方信息页面
-                </a>
-                <!-- 注释：如需恢复原链接，替换href为：https://www.caac.gov.cn/XXGK/XXGK/GFXWJ/202602/t20260203_229954.html -->
-                
-                <p style="text-align: center; margin-top: 20px; color: #4a5568; font-style: italic;">
-                    注：本文档为学习用途，实际运行请严格遵守民航局最新规定。
-                </p>
             </div>
         </div>
         
