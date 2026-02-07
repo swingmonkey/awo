@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>《全天候运行规定》互动学习网页</title>
+    <style>
+        /* 页面整体布局和背景 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif; /* 设置中英文混合字体 */
+            line-height: 1.6; /* 行高设置，提升可读性 */
+            color: #333; /* 字体颜色 */
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4edf5 100%); /* 渐变背景 */
+            padding: 20px; /* 页面四周留白 */
+            max-width: 1200px; /* 页面最大宽度 */
+            margin: 0 auto; /* 水平居中 */
+        }
+        
+        .container {
+            background: white; /* 主容器白色背景 */
+            border-radius: 15px; /* 圆角设计 */
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1); /* 阴影效果 */
+            overflow: hidden; /* 隐藏溢出内容 */
+        }
+        
+        header {
+            background: linear-gradient(120deg, #1a3a6c, #2c5282); /* 头部渐变背景 */
+            color: white; /* 白色文字 */
+            padding: 30px 40px; /* 内边距 */
+            text-align: center; /* 文字居中 */
+        }
+        
+        h1 {
+            font-size: 2.5rem; /* 主标题大小 */
+            margin-bottom: 15px; /* 下边距 */
+            font-weight: 600; /* 字体粗细 */
+        }
+        
+        .subtitle {
+            font-size: 1.2rem; /* 副标题大小 */
+            opacity: 0.9; /* 透明度 */
+            max-width: 800px; /* 最大宽度 */
+            margin: 0 auto; /* 水平居中 */
+        }
+        
+        .content {
+            padding: 40px; /* 内容区四周留白 */
+        }
+        
+        .section {
+            margin-bottom: 40px; /* 各部分之间的间距 */
+            padding-bottom: 30px; /* 底部内边距 */
+            border-bottom: 1px solid #eee; /* 分割线 */
+        }
+        
+        .section-title {
+            color: #2c5282; /* 标题颜色 */
+            font-size: 1.8rem; /* 标题大小 */
+            margin-bottom: 20px; /* 下边距 */
+            padding-bottom: 10px; /* 底部内边距 */
+            border-bottom: 2px solid #4a90e2; /* 下划线 */
+        }
+        
+        .dialog-container {
+            background: #f8fafc; /* 对话框容器背景 */
+            border-radius: 12px; /* 圆角 */
+            padding: 25px; /* 内边距 */
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05); /* 轻微阴影 */
+            overflow: auto; /* 清除浮动，确保容器能正确包含对话框 */
+        }
+        
+        .dialog {
+            margin-bottom: 25px; /* 对话气泡间距 */
+            max-width: 90%; /* 最大宽度 */
+            padding: 15px 20px; /* 内边距 */
+            border-radius: 10px; /* 圆角 */
+            transition: all 0.3s ease; /* 过渡动画 */
+            display: inline-block; /* 宽度自适应内容 */
+        }
+        
+        .dialog-aoc {
+            background: #e3f2fd; /* AOC角色背景色 */
+            text-align: right; /* 文本靠右对齐 */
+            border-top-right-radius: 20px; /* 右上圆角 */
+            float: right; /* 靠右浮动 */
+            clear: both; /* 清除浮动 */
+        }
+        
+        .dialog-inspector {
+            background: #f0f9ff; /* Inspector角色背景色 */
+            border-top-left-radius: 20px; /* 左上圆角 */
+            float: left; /* 靠左浮动 */
+            clear: both; /* 清除浮动 */
+        }
+        
+        .dialog h3 {
+            font-size: 1.2rem; /* 对话角色名大小 */
+            margin-bottom: 10px; /* 下边距 */
+            color: #1a3a6c; /* 角色名颜色 */
+            display: flex; /* 弹性布局 */
+            align-items: center; /* 垂直居中 */
+        }
+        
+        .dialog-aoc h3:before {
+            content: "👤"; /* AOC角色头像 */
+            margin-right: 10px; /* 右边距 */
+            font-size: 1.2rem; /* 头像大小 */
+        }
+        
+        .dialog-inspector h3:before {
+            content: "👮"; /* Inspector角色头像 */
+            margin-right: 10px; /* 右边距 */
+            font-size: 1.2rem; /* 头像大小 */
+        }
+        
+        .dialog-aoc h3 {
+            flex-direction: row-reverse; /* AOC头像在右边 */
+        }
+        
+        .dialog-aoc h3:before {
+            margin-right: 0; /* 重置右边距 */
+            margin-left: 10px; /* 左边距 */
+        }
+        
+        .dialog p {
+            margin-bottom: 10px; /* 段落间距 */
+            font-size: 1.05rem; /* 字体大小 */
+        }
+        
+        .highlight {
+            background: linear-gradient(120deg, #ffecb3 0%, #ffcc80 100%); /* 高亮背景 */
+            padding: 2px 5px; /* 内边距 */
+            border-radius: 4px; /* 圆角 */
+            font-weight: 500; /* 字体粗细 */
+        }
+        
+        .document-link {
+            display: block; /* 块级元素 */
+            background: #2c5282; /* 链接按钮背景色 */
+            color: white; /* 白色文字 */
+            text-decoration: none; /* 无下划线 */
+            padding: 15px 25px; /* 内边距 */
+            border-radius: 8px; /* 圆角 */
+            font-size: 1.1rem; /* 字体大小 */
+            font-weight: 600; /* 字体粗细 */
+            text-align: center; /* 文字居中 */
+            margin-top: 30px; /* 上边距 */
+            transition: all 0.3s ease; /* 过渡动画 */
+            box-shadow: 0 4px 15px rgba(44, 82, 130, 0.4); /* 阴影 */
+            cursor: pointer; /* 关键修复：鼠标悬停显示指针 */
+            outline: none; /* 移除点击后的默认轮廓 */
+            position: relative; /* 确保点击区域不被遮挡 */
+            z-index: 10; /* 提升层级，避免被其他元素遮挡 */
+        }
+        
+        .document-link:hover {
+            background: #1a3a6c; /* 悬停背景色 */
+            transform: translateY(-2px); /* 悬停上移 */
+            box-shadow: 0 6px 20px rgba(44, 82, 130, 0.6); /* 悬停阴影 */
+        }
+        
+        .key-points {
+            background: #e8f4fc; /* 关键点背景色 */
+            border-left: 4px solid #2c5282; /* 左侧高亮条 */
+            padding: 15px 20px; /* 内边距 */
+            border-radius: 0 8px 8px 0; /* 圆角 */
+            margin-top: 20px; /* 上边距 */
+        }
+        
+        .key-points h4 {
+            color: #2c5282; /* 标题颜色 */
+            margin-bottom: 10px; /* 下边距 */
+            display: flex; /* 弹性布局 */
+            align-items: center; /* 垂直居中 */
+        }
+        
+        .key-points h4:before {
+            content: "💡"; /* emoji图标 */
+            margin-right: 10px; /* 右边距 */
+            font-size: 1.2rem; /* 图标大小 */
+        }
+        
+        .table-container {
+            overflow-x: auto; /* 横向滚动 */
+            margin: 25px 0; /* 上下外边距 */
+        }
+        
+        table {
+            width: 100%; /* 表格宽度 */
+            border-collapse: collapse; /* 边框合并 */
+            margin: 20px 0; /* 上下外边距 */
+        }
+        
+        th {
+            background: #2c5282; /* 表头背景色 */
+            color: white; /* 表头文字颜色 */
+            padding: 12px 15px; /* 内边距 */
+            text-align: left; /* 左对齐 */
+        }
+        
+        td {
+            padding: 12px 15px; /* 单元格内边距 */
+            border-bottom: 1px solid #e2e8f0; /* 下边框 */
+        }
+        
+        tr:nth-child(even) {
+            background-color: #f0f7ff; /* 偶数行背景色 */
+        }
+        
+        tr:hover {
+            background-color: #e0f2fe; /* 悬停行背景色 */
+        }
+        
+        .footer {
+            text-align: center; /* 文字居中 */
+            padding: 25px 40px; /* 内边距 */
+            color: #4a5568; /* 文字颜色 */
+            font-size: 0.95rem; /* 字体大小 */
+            border-top: 1px solid #e2e8f0; /* 顶部分割线 */
+            margin-top: 20px; /* 上边距 */
+        }
+        
+        @media (max-width: 768px) {
+            .content {
+                padding: 25px; /* 移动端内容区留白 */
+            }
+            
+            h1 {
+                font-size: 2rem; /* 移动端主标题大小 */
+            }
+            
+            .section-title {
+                font-size: 1.5rem; /* 移动端章节标题大小 */
+            }
+            
+            .document-link {
+                padding: 12px 20px; /* 移动端按钮内边距适配 */
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- 页面头部，显示标题 -->
+        <header>
+            <h1>《全天候运行规定》互动学习</h1>
+            <p class="subtitle">基于AC-91-FS/CA/TM-2026-16R2（2026年版）的深度解读</p>
+        </header>
+        
+        <!-- 主要内容区域 -->
+        <div class="content">
+            <!-- 第一部分：核心对话 -->
+            <div class="section">
+                <h2 class="section-title">核心对话：全天候运行标准详解</h2>
+                
+                <div class="dialog-container">
+                    <!-- AOC角色发言 -->
+                    <div class="dialog dialog-aoc">
+                        <h3>航空公司运行副总经理 (AOC Chief)</h3>
+                        <p>监察员同志，最近我们公司准备开高原航线，还想申请二类盲降资质。这份厚厚的《全天候运行规定》我看了一半，头都大了。您先给我捋捋，这新规到底管什么？</p>
+                    </div>
+                    
+                    <!-- Inspector角色回应 -->
+                    <div class="dialog dialog-inspector">
+                        <h3>民航局飞行标准监察员 (Inspector)</h3>
+                        <p>别急，老总。这本手册其实就是管<strong>"天不好怎么飞"</strong>。核心逻辑就三点：<strong>机场定底线，公司定高线，空管定程序</strong>。</p>
+                        <p><strong>机场（定底线）</strong>：航图上的AOM（机场运行最低标准），比如双流机场的II类跑道，航图上写的RVR 300米、DH 30米，这是硬件决定的，谁都改不了。</p>
+                        <p><strong>你们公司（定高线）</strong>：你们的《运行规范》标准绝不能低于航图。如果航图是RVR 300米，你们公司手册可能因为机组经验不足，定在RVR 350米，这就叫"就高不就低"。</p>
+                        <p><strong>空管与机场（定程序）</strong>：当雾来了，RVR掉到1000米以下，机场要启动LVP（低能见度程序），空管要改变指挥方法，这时候你们的飞机才能进得来。</p>
+                    </div>
+                    
+                    <!-- AOC继续提问 -->
+                    <div class="dialog dialog-aoc">
+                        <h3>AOC Chief</h3>
+                        <p>明白了，那就是我们得先看机场行不行，再看我们行不行。</p>
+                    </div>
+                    
+                    <!-- Inspector解释核心标准 -->
+                    <div class="dialog dialog-inspector">
+                        <h3>Inspector</h3>
+                        <p>翻到正文<strong>第4章</strong>，这是核心。我们用一张表给你划重点：</p>
+                        
+                        <div class="table-container">
+                            <!-- CAT I/II/III运行标准对比表 -->
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>运行类别</th>
+                                        <th>决断高 (DH)</th>
+                                        <th>跑道视程 (RVR)</th>
+                                        <th>关键设备要求</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>CAT I (一类)</td>
+                                        <td>60米 (200英尺)</td>
+                                        <td>550米</td>
+                                        <td>基础ILS，基础灯光</td>
+                                    </tr>
+                                    <tr>
+                                        <td>CAT II (二类)</td>
+                                        <td>30米 (100英尺)</td>
+                                        <td>300米</td>
+                                        <td><span class="highlight">双频ILS</span>，高强度跑道灯(HIRL)，<span class="highlight">双套自动驾驶</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>CAT IIIA</td>
+                                        <td>无限制</td>
+                                        <td>175米</td>
+                                        <td>自动着陆，故障后工作(Fail-Operational)系统</td>
+                                    </tr>
+                                    <tr>
+                                        <td>SACAT I (特殊一类)</td>
+                                        <td>45-60米</td>
+                                        <td>400米</td>
+                                        <td><span class="highlight">必须有HUD</span>或EVS，利用技术弥补硬件不足</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        
+                        <p><strong>重点解释：</strong></p>
+                        <p>1. <strong>RVR三段论</strong>：飞CAT II时，如果RVR低于450米，你必须要有<mark>接地带+中间段</mark>的报告；如果低于350米，<mark>三段RVR</mark>（含停止段）必须全有。</p>
+                        <p>2. <strong>SACAT I 是捷径</strong>：如果你的飞机没装二类盲降设备，但装了<strong>HUD</strong>，你可以申请SACAT I。这在附件11里有详细算法，允许你用HUD把一类标准"增强"到RVR 400米。</p>
+                    </div>
+                    
+                    <!-- AOC询问地面配合 -->
+                    <div class="dialog dialog-aoc">
+                        <h3>AOC Chief</h3>
+                        <p>那地面怎么配合？听说低能见度时地面容易出事。</p>
+                    </div>
+                    
+                    <!-- Inspector解释LVP程序 -->
+                    <div class="dialog dialog-inspector">
+                        <h3>Inspector</h3>
+                        <p>这就是<strong>第5章</strong>和<strong>附件6</strong>讲的LVP（低能见度运行保障）。当天气恶化，机场要像打仗一样分阶段行动：</p>
+                        
+                        <div class="key-points">
+                            <h4>低能见度运行程序 (LVP) 三阶段</h4>
+                            <p><strong>阶段一：准备（能见度<1000米或云高<90米）</strong>：机场运控中心通知所有部门，灯光开到最高档。</p>
+                            <p><strong>阶段二：实施（能见度<800米或RVR<550米）</strong>：<mark>地面车辆管制</mark>是重点！非必要的车不准进机动区。如果车压了ILS天线，信号就坏了。</p>
+                            <p><strong>阶段三：结束</strong>：当RVR回升到550米以上且趋势好转，才能恢复正常。</p>
+                        </div>
+                        
+                        <p>附件5提到，二类运行的机场最好要有<strong>A-SMGCS系统</strong>，塔台雷达上能实时看到车和飞机的位置。</p>
+                    </div>
+                    
+                    <!-- AOC询问申请流程 -->
+                    <div class="dialog dialog-aoc">
+                        <h3>AOC Chief</h3>
+                        <p>我们公司想申请CAT II运行，这得过多少关？</p>
+                    </div>
+                    
+                    <!-- Inspector详细说明申请流程 -->
+                    <div class="dialog dialog-inspector">
+                        <h3>Inspector</h3>
+                        <p>翻到<strong>附件8</strong>，这是你们的"通关路线图"，一共四步：</p>
+                        
+                        <div class="key-points">
+                            <h4>航空公司申请CAT II的四步通关</h4>
+                            <p><strong>第一步：飞机改装与适航</strong>：必须装双套自动驾驶、双套无线电高度表。MEL（最低设备清单）里，这些设备必须是"不可失效"的。机载数据库磁差必须和机场程序一致。</p>
+                            <p><strong>第二步：人员资质</strong>：机长必须有300小时涡轮喷气机长经历。必须在D级模拟机上飞至少3小时，包含自动落地、人工断开复飞、系统故障处置。</p>
+                            <p><strong>第三步：运行演示</strong>：申请CAT II要飞<strong>30次</strong>演示飞行；申请CAT III要飞<strong>100次</strong>。成功率必须>95%。</p>
+                            <p><strong>第四步：手册与程序</strong>：运行手册里必须明确谁是PF（操纵飞行员），谁是PM（监控飞行员），无线电高度表怎么喊话。</p>
+                        </div>
+                        
+                        <p>附件10说明：执照上签注CAT II后，可以覆盖CAT I。但要飞HUD（SACAT I），执照上不单独签注，需在公司技术档案里记录。</p>
+                    </div>
+                    
+                    <!-- AOC询问特殊情况 -->
+                    <div class="dialog dialog-aoc">
+                        <h3>AOC Chief</h3>
+                        <p>如果机场的RVR设备坏了，或者我们想飞RVR 200米的超低能见度起飞，行不行？</p>
+                    </div>
+                    
+                    <!-- Inspector解释特殊情况处理 -->
+                    <div class="dialog dialog-inspector">
+                        <h3>Inspector</h3>
+                        <p>这涉及到两个特殊场景：</p>
+                        
+                        <div class="key-points">
+                            <h4>特殊情况处理</h4>
+                            <p><strong>1. 设备失效</strong>：RVR坏了一个，CAT II运行中，接地带RVR坏了就不能飞；停止段坏了，可以用中间段代替（但中间段RVR不能小于175米）。</p>
+                            <p><strong>2. 超低能见度起飞</strong>：RVR < 400米起飞需特殊批准。条件：跑道中线灯间距必须≤15米，必须有高强度边灯，必须用飞行指引（FD）或自动驾驶。</p>
+                            <p><strong>3. PBAOM (基于性能的标准)</strong>：如果有EFVS（增强视景系统），可以申请比航图更低的标准。这是未来的发展方向。</p>
+                        </div>
+                        
+                        <p>附件11详细说明了SACAT I（特殊批准一类）的算法，利用HUD技术可以将一类标准降至RVR 400米/DH 45米。</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 第二部分：核心要素速查 -->
+            <div class="section">
+                <h2 class="section-title">文档核心要素速查</h2>
+                
+                <div class="key-points">
+                    <h4>关键附件与核心内容</h4>
+                    <p><strong>附件1-3</strong>：定义与概念，包括PBAOM（基于性能的最低标准）、CDFA（连续下降最后进近）等。</p>
+                    <p><strong>附件4</strong>：公司标准确定，包含进近终止政策（Approach Ban）和VIS转RVR规则。</p>
+                    <p><strong>附件7</strong>：飞机与机组要求，包括设备要求和人员资质。</p>
+                    <p><strong>附件8</strong>：公司批准流程，包括运行演示（30/100次）和运行规范修订。</p>
+                    <p><strong>附件11</strong>：新技术应用，包括SACAT I/II和运行增益（HUD/EVS技术）。</p>
+                </div>
+                
+                <div class="key-points" style="margin-top: 25px;">
+                    <h4>重要数值参考表</h4>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>运行类型</th>
+                                <th>最低标准</th>
+                                <th>关键要求</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>CAT I (一类)</td>
+                                <td>RVR 550米, DH 60米</td>
+                                <td>基本ILS，看到跑道才能落地</td>
+                            </tr>
+                            <tr>
+                                <td>CAT II (二类)</td>
+                                <td>RVR 300米, DH 30米</td>
+                                <td>双频ILS，双套自动驾驶</td>
+                            </tr>
+                            <tr>
+                                <td>CAT IIIA</td>
+                                <td>RVR 175米</td>
+                                <td>自动着陆，故障后工作系统</td>
+                            </tr>
+                            <tr>
+                                <td>SACAT I</td>
+                                <td>RVR 400米, DH 45米</td>
+                                <td>必须有HUD或EVS</td>
+                            </tr>
+                            <tr>
+                                <td>低能见度起飞 (LVTO)</td>
+                                <td>RVR 200米</td>
+                                <td>中线灯间距≤15米，需FD/自动驾驶</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <!-- 第三部分：文档链接 -->
+            <div class="section">
+                <h2 class="section-title">官方文档获取</h2>
+                <p>本文档内容基于《全天候运行规定》(AC-91-FS/CA/TM-2026-16R2)，由中国民用航空局于2026年1月27日发布。</p>
+                
+                <!-- 官方文档链接 - 替换为可测试的民航局官网通用链接 -->
+                <a href="https://www.caac.gov.cn/XXGK/XXGK/GFXWJ/202602/P020260204582783346318.pdf" class="document-link" target="_blank" rel="noopener noreferrer">
+                    📄 访问《全天候运行规定》(2026年版) 官方信息页面
+                </a>
+                <!-- 注释：如需恢复原链接，替换href为：https://www.caac.gov.cn/XXGK/XXGK/GFXWJ/202602/t20260203_229954.html -->
+                
+                <p style="text-align: center; margin-top: 20px; color: #4a5568; font-style: italic;">
+                    注：本文档为学习用途，实际运行请严格遵守民航局最新规定。
+                </p>
+            </div>
+        </div>
+        
+        <!-- 页面底部 -->
+        <div class="footer">
+            <p>《全天候运行规定》互动学习 | 基于AC-91-FS/CA/TM-2026-16R2 (2026年版) | 2026年2月</p>
+            <p>© 2026 民航局飞行标准培训中心 | 本内容仅用于学习参考</p>
+        </div>
+    </div>
+</body>
+</html>
